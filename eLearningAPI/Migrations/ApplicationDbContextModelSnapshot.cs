@@ -230,6 +230,23 @@ namespace eLearningAPI.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("eLearningAPI.Models.Class", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Class");
+                });
+
             modelBuilder.Entity("eLearningAPI.Models.Course", b =>
                 {
                     b.Property<int>("Id")
@@ -238,15 +255,22 @@ namespace eLearningAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ClassId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ClassId");
 
                     b.ToTable("Courses");
                 });
@@ -367,6 +391,27 @@ namespace eLearningAPI.Migrations
                     b.ToTable("Videos");
                 });
 
+            modelBuilder.Entity("eLearningAPI.Models.Vote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Votes");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -418,6 +463,17 @@ namespace eLearningAPI.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("eLearningAPI.Models.Course", b =>
+                {
+                    b.HasOne("eLearningAPI.Models.Class", "Class")
+                        .WithMany("Courses")
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Class");
+                });
+
             modelBuilder.Entity("eLearningAPI.Models.Exam", b =>
                 {
                     b.HasOne("eLearningAPI.Models.Lesson", "Lesson")
@@ -462,9 +518,27 @@ namespace eLearningAPI.Migrations
                     b.Navigation("Lesson");
                 });
 
+            modelBuilder.Entity("eLearningAPI.Models.Vote", b =>
+                {
+                    b.HasOne("eLearningAPI.Models.Course", "Course")
+                        .WithMany("Votes")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("eLearningAPI.Models.Class", b =>
+                {
+                    b.Navigation("Courses");
+                });
+
             modelBuilder.Entity("eLearningAPI.Models.Course", b =>
                 {
                     b.Navigation("Lessons");
+
+                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("eLearningAPI.Models.Lesson", b =>
