@@ -71,7 +71,7 @@ namespace eLearningAPI.Controllers
                 return BadRequest("Invalid course data.");
             }
 
-            var clas = await _context.Class.FindAsync(courseDTO.Class_Id);
+            var clas = await _context.Classes.FindAsync(courseDTO.Class_Id);
 
             if (clas == null)
             {
@@ -108,7 +108,7 @@ namespace eLearningAPI.Controllers
                 return NotFound();
             }
 
-            var clas = await _context.Class.FindAsync(courseUpdateDTO.Class_Id);
+            var clas = await _context.Classes.FindAsync(courseUpdateDTO.Class_Id);
 
             if (clas == null)
             {

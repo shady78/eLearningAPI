@@ -17,7 +17,7 @@ namespace eLearningAPI.Models
         public DbSet<File> Files { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<Video> Videos { get; set; }
-        public DbSet<Class> Class { get; set; }
+        public DbSet<Class> Classes { get; set; }
         public DbSet<Vote> Votes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
